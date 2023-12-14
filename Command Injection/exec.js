@@ -1,27 +1,16 @@
-
-const { execFile } = require('child_process');
-
 const express = require('express');
 const router = express.Router()
 
 const { exec, spawn }  = require('child_process');
 
 
-router.post('/ping', 
-(req,res) => {
-    const url = req.body.url;
-    if (typeof url === "string" && url.trim() !== "") {
-        execFile(url.trim(), (error) => {
-            if (error) {
-                return res.send('error');
-            }
-            res.send('pong')
-        });
-    } else {
-        return res.send('Invalid input');
-    }
-}
-)
+router.post('/ping', (req,res) => {
+    exec(`${req.body.url}`, (error) => {
+        if (error) {
+            return res.send('error');
+        }
+        res.send('pong')
+    })
     
 
 router.post('/gzip', (req,res) => {

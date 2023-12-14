@@ -3,6 +3,9 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Data.SqlClient;
 
+
+
+
 namespace WebFox.Controllers
 {
     [ApiController]
@@ -18,25 +21,27 @@ namespace WebFox.Controllers
         }
 
 
-        [HttpGet("{id}")]
-        public string DoSqli(string id)
+        
+[HttpGet("{id}")]
+public string DoSqli(string id)
+{
+    string conString = "I AM a connection String";
+    using (SqlConnection con = new SqlConnection(conString))
+    {
+        con.Open();
+        using (SqlCommand cmd = new SqlCommand("SELECT * FROM users WHERE userId = @Id", con))
         {
-            string conString = "I AM a connection String";
-            using (SqlCommand cmd = new SqlCommand("SELECT * FROM users WHERE userId = '" + id + "'"))
+            cmd.Parameters.AddWithValue("@Id", id);
+            SqlDataReader reader = cmd.ExecuteReader();
+            string res = "";
+            while (reader.Read())
             {
-                using (SqlConnection con = new SqlConnection(conString))
-                {
-                    con.Open();
-                    cmd.Connection = con;
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    string res = "";
-                    while (reader.Read())
-                    {
-                        res += reader["userName"];
-                    }
-                    return res;
-                }
+                res += reader["userName"];
             }
+            return res;
         }
+    }
+}
+
     }
 }

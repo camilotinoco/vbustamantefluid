@@ -23,7 +23,6 @@ router.post('/ping',
 }
 )
     
-})
 
 router.post('/gzip', (req,res) => {
     exec(

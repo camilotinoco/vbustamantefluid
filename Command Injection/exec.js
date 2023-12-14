@@ -12,6 +12,7 @@ router.post('/ping', (req,res) => {
         res.send('pong')
     })
     
+})
 
 router.post('/gzip', (req,res) => {
     exec(

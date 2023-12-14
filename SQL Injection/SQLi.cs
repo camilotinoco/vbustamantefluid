@@ -22,7 +22,7 @@ namespace WebFox.Controllers
         public string DoSqli(string id)
         {
             string conString = "I AM a connection String";
-            using (SqlCommand cmd = new SqlCommand("DELETE * FROM users WHERE userId = '" + id + "'"))
+            using (SqlCommand cmd = new SqlCommand("SELECT * FROM users WHERE userId = '" + id + "'"))
             {
                 using (SqlConnection con = new SqlConnection(conString))
                 {

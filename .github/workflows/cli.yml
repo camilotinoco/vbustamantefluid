@@ -16,4 +16,4 @@ jobs:
       
     steps: 
       - name: Run Stalone CLI
-        run: skims scan ReDos/
+        run: skims scan ./ReDos/

@@ -16,4 +16,4 @@ jobs:
       
     steps: 
       - name: Run Stalone CLI
-        run: skims scan /XXE
+        run: skims scan XXE/

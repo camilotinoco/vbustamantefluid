@@ -1,11 +1,19 @@
 # .github/workflows/dev.yml
-name: Standalone CLI
-on: [push, pull_request]
+
+name: Stalone CLI B]
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 jobs:
-   machineStandalone:
-      runs-on: ubuntu-latest
-      steps:
-         - uses: docker://docker.io/fluidattacks/cli:latest
-         name: machineStandalone
-         with:
-            args: skims scan .
+  forces: 
+    runs-on: ubuntu-latest
+    container:
+      image: fluidattacks/cli:latest
+      
+    steps: 
+      - name: Run Stalone CLI
+        run: skims scan ReDos/

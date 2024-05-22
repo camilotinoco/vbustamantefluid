@@ -1,1 +1,12 @@
-
+namespace: cli
+output:
+  file_path: ./Fluid-Attacks-Results.csv
+  format: CSV
+working_dir: .
+language: EN
+sast:
+  include:
+    - .
+sca:
+  include:
+    - .

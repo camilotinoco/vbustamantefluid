@@ -16,4 +16,4 @@ jobs:
       
     steps: 
       - name: Run Stalone CLI
-        run: skims scan /__w/Vulnerable-Code-Snippets/Vulnerable-Code-Snippets/XXE
+        run: skims scan ./__w/Vulnerable-Code-Snippets/Vulnerable-Code-Snippets/XXE

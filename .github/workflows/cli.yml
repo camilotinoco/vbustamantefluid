@@ -1,12 +1,12 @@
-namespace: cli
-output:
-  file_path: ./Fluid-Attacks-Results.csv
-  format: CSV
-working_dir: .
-language: EN
-sast:
-  include:
-    - .
-sca:
-  include:
-    - .
+# .github/workflows/dev.yml
+name: Standalone CLI
+on: [push, pull_request]
+jobs:
+   machineStandalone:
+      runs-on: ubuntu-latest
+      steps:
+         - uses: actions/checkout@f095bcc56b7c2baf48f3ac70d6d6782f4f553222
+         - uses: docker://docker.io/fluidattacks/cli:latest
+         name: machineStandalone
+         with:
+            args: skims scan .

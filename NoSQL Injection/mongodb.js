@@ -1,3 +1,8 @@
+
+import { MongoClient } from 'mongodb';
+import { escape } from 'mongodb';
+import config from 'path/to/config';
+
 const express = require('express');
 const config = require('../config')
 const router = express.Router()
@@ -27,23 +32,39 @@ router.post('/customers/register', async (req, res) => {
 
 
 // Vulnerable search function
-router.post('/customers/find', async (req, res) => {
+router.post('/customers/find', 
+async (req, res) => {
+    try {
+        const client = await MongoClient.connect(url, { useNewUrlParser: true });
+        if (!client) {
+            return res.json({ status: "Error" });
+        }
 
-    const client = await MongoClient.connect(url, { useNewUrlParser: true })
-        .catch(err => { console.log(err); });
-    if (!client) {
-        return res.json({ status: "Error" });
+        const db = client.db(config.MONGODB_DB_NAME);
+        const customers = db.collection("customers");
+
+        const name = req.body.name;
+
+        // Escaping and validating input
+        if (typeof name !== 'string' || name.trim() === '') {
+            throw new Error('Invalid input');
+        }
+        
+        const escapedName = escape(name.trim());
+        const myobj = { name: escapedName };
+
+        customers.findOne(myobj, function (err, result) {
+            if (err) {
+                throw err;
+            }
+            client.close();
+            res.json(result);
+        });
+    } catch (err) {
+        res.status(500).json({ status: "Error", message: err.message });
     }
-    const db = client.db(config.MONGODB_DB_NAME);
-    const customers = db.collection("customers")
-
-    let name = req.body.name
-    let myobj = { name: name };
-    customers.findOne(myobj, function (err, result) {
-        if (err) throw err;
-        db.close();
-        res.json(result)
-    });
+}
+);
 
   
 })

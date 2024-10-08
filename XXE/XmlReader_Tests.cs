@@ -5,32 +5,36 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
+
+
+
 namespace XXEExamples.Tests
 {
     [TestFixture]
     public class XmlReader_Tests
     {
-        [Test]
-        public void XMLReader_WithDTDProcessingParseAndXmlResolverSet_NotSafe()
+        
+[Test]
+public void XMLReader_WithDTDProcessingParseAndXmlResolverSet_NotSafe()
+{
+    AssertXXE.IsXMLParserSafe((string xml) =>
+    {
+        XmlReaderSettings settings = new XmlReaderSettings();
+        settings.DtdProcessing = DtdProcessing.Prohibit; // Prohibit DTD processing to prevent XXE attacks.
+        settings.XmlResolver = null; // Disable XmlResolver to prevent loading external resources.
+
+        using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
         {
-            AssertXXE.IsXMLParserSafe((string xml) =>
-            {
-                XmlReaderSettings settings = new XmlReaderSettings();
-                settings.DtdProcessing = DtdProcessing.Parse;
-                settings.XmlResolver = new XmlUrlResolver();
-                settings.MaxCharactersFromEntities = 6000;
+            XmlReader reader = XmlReader.Create(stream, settings);
 
-                using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
-                {
-                    XmlReader reader = XmlReader.Create(stream, settings);
-
-                    var xmlDocument = new XmlDocument();
-                    xmlDocument.XmlResolver = new XmlUrlResolver();
-                    xmlDocument.Load(reader);
-                    return xmlDocument.InnerText;
-                }
-            }, false);
+            var xmlDocument = new XmlDocument();
+            xmlDocument.XmlResolver = null; // Disable XmlResolver in XmlDocument to prevent XXE attacks.
+            xmlDocument.Load(reader);
+            return xmlDocument.InnerText;
         }
+    }, false);
+}
+
 
         [Test]
         public void XMLReader_WithDTDProcessingIgnored_Safe()

@@ -1,3 +1,6 @@
+
+// No new imports are required for this fix
+
 //https://html5.digi.ninja/challenge.html
 
 if (typeof(SERVER_DOMAIN) === 'undefined') {
@@ -80,15 +83,26 @@ function get_domain() {
 	return arr[0] + "//" + arr[2]
 }
 
-function open_window() {
-	if (window_ref == null || window_ref.closed) {
-		window_ref = window.open (RECEIVE_URL, "score board", "height=260,width=550");
 
-		if (window_ref == null) {
-			alert ("Failed to open window. You must allow pop-ups.");
-		}
-	}
+function open_window() {
+    if (window_ref == null || window_ref.closed) {
+        // Create the options string with noopener and noreferrer
+        const windowOptions = "height=260,width=550,noopener,noreferrer";
+
+        // Open the window with the updated options
+        window_ref = window.open(RECEIVE_URL, "score board", windowOptions);
+
+        if (window_ref == null) {
+            alert("Failed to open window. You must allow pop-ups.");
+        } else {
+            // Additional security measure: set opener to null
+            if (window_ref.opener) {
+                window_ref.opener = null;
+            }
+        }
+    }
 }
+
 
 const usernameButton = document.getElementById("setUsername");
 usernameButton.addEventListener("click", store_username, false);

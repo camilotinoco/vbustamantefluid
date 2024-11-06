@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Unsafe Deserialization/Unsafe Deserialization.iml" filepath="$PROJECT_DIR$/Unsafe Deserialization/Unsafe Deserialization.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Vulnerable-Code-Snippets.iml" filepath="$PROJECT_DIR$/Vulnerable-Code-Snippets.iml" />
+    </modules>
+  </component>
+</project>

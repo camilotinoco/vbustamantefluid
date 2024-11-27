@@ -1,8 +1,3 @@
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 const express = require('express');
 const router = express.Router()
 
@@ -18,43 +13,14 @@ const connection = mysql.createConnection({
  
 connection.connect();
 
-router.get('/example1/user/:id', 
-(req, res) => {
+router.get('/example1/user/:id', (req,res) => {
     let userId = req.params.id;
-    let sql = "SELECT * FROM users WHERE id = ?";
-
-    try {
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setString(1, userId);
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        // Convert ResultSet to a format that can be sent as JSON
-        List<Map<String, Object>> resultList = new ArrayList<>();
-        ResultSetMetaData metaData = resultSet.getMetaData();
-        int columnCount = metaData.getColumnCount();
-
-        while (resultSet.next()) {
-            Map<String, Object> row = new HashMap<>();
-            for (int i = 1; i <= columnCount; i++) {
-                String columnName = metaData.getColumnName(i);
-                Object columnValue = resultSet.getObject(i);
-                row.put(columnName, columnValue);
-            }
-            resultList.add(row);
-        }
-
-        res.json(resultList);
-
-        // Close resources
-        resultSet.close();
-        preparedStatement.close();
-    } catch (SQLException e) {
-        // Handle SQL exception
-        res.status(500).json({ error: "Database error occurred" });
+    let query = {
+        sql : "SELECT * FROM users WHERE id=" + userId
     }
-}
-);
+    connection.query(query,(err, result) => {
+        res.json(result);
+    });
 })
 
 router.get('/example2/user/:id',  (req,res) => {

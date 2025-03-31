@@ -1,4 +1,4 @@
-Probemos si ediciones directas cuentan como push.
+Probemos si ediciones directas cuentan como push
 Cualquier cosa
 Lights will guide you home
 And ignite your bones 
